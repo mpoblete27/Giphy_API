@@ -1,4 +1,3 @@
-
 var topics = ["Spiderman", "Thanos", "Iron Man", "Thor"];
 
 //making a button 
@@ -19,36 +18,34 @@ $("#add-gif").on("click", function(event) {
     var gif = $("#gif-input").val().trim();
     topics.push(gif);
     renderButtons();
-}
-
-
-
+});
 
 //searching giphy using ajax
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +  buttonInterior + "&api_key=u0yDcmpSHAUAtpBe1a3aIdituU09CnfS";
+function displayGifInfo(){
+    var gif = $(this).attr("data-name")
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +  gif + "&api_key=u0yDcmpSHAUAtpBe1a3aIdituU09CnfS";
    
-
-  // <!-- api key: u0yDcmpSHAUAtpBe1a3aIdituU09CnfS -->
-  $.ajax({
-    url: queryURL,
-    method: "GET"
-  }).then(function(response) {
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response) {
     console.log(response);
-   
-    // extract the array of gifs <--
-    // loop through array <--
-    // make a blank image container <--
-    // add the url to gif to the image container <--
-    // append to screen <--
-
     var gifArray = response.data;
     // console.log(gifArray)
-    for(var i = 0; i < gifArray.length; i++){
-      var image = $('<img>');
-      image.attr('src', gifArray[i].images.fixed_height.url);
-      $('.container').append(image);
+    for(var i = 0; i < gifArray[10]; i++){
+    var image = $('<img>');
+    image.attr('src', gifArray[i].images.fixed_height_still.url);
+    image.attr('data-state', "still");
+    image.attr('data-still', gif.images.fixed_height_still.url);
+    image.attr('data-animate', gif.images.fixed_height.url);
+    image.attr("class", "clicky");
+    $('.gif-container').append(image);
     }
-
-  });
-    
-    var topics = [];
+    })};
+// When the user clicks on a button, the page should grab 10 static, 
+// non-animated gif images from the GIPHY API and place them on the page.
+// for moving image from array: data.[i].images.fixed_height
+// for rating: data.[i].rating 
+// image.attr('src', gifArray[i].images.fixed_height.url);
+// image.attr('src', gifArray[i].images.rating);
+// <!-- api key: u0yDcmpSHAUAtpBe1a3aIdituU09CnfS -->
